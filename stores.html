@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>stores</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- $store -->
+  <!-- Using a data in store. Alpine Store located in script -->
+  <div x-data class="container px-4 py-2">
+    <!-- Using x-bind:class & '?' -->
+    <p 
+    x-bind:class="$store.darkMode.on ? 'bg-slate-800 text-white' : '' " 
+    class="p-2 bg-slate-300 my-2 rounded-lg">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum dolores a autem ab commodi debitis perferendis quibusdam voluptatem, numquam fugit maiores voluptas error, provident minima!
+    </p>
+
+    <!-- Using :class & '&&' -->
+    <p 
+    :class="$store.darkMode.on && 'bg-slate-800 text-white'" 
+    class="p-2 bg-slate-300 my-2 rounded-lg">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, accusantium. Repellat soluta facere officia. Quis minima aliquid aliquam asperiores qui saepe tempore odio laudantium ducimus!
+    </p>
+
+
+    <button  
+    x-on:click="$store.darkMode.toggle()"
+    class="px-4 py-2 bg-sky-300 rounded-xl">
+      Change to Dark Side
+    </button>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('darkMode', {
+          on: false,
+
+          toggle() {
+              this.on = ! this.on
+          }
+      })
+    })
+  </script>
+</body>
+</html>

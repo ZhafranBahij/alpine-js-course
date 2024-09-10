@@ -4,9 +4,160 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yahallo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
 </head>
 <body>
-  
+  <div class="container mx-auto">
+    <h1 class="text-xl font-bold">Alpine.js Crash Course</h1>
+
+    <!-- x-data alpine component -->
+    <!-- x-data for declare any data or variable -->
+    <div x-data="{
+    open: false, 
+    name: 'Rainfog',
+    search: '',
+    posts: [
+      {title: 'Write One'},
+      {title: 'Write Two'},
+      {title: 'Write Three'},
+      {title: 'Write Four'},
+    ]
+    }">
+
+      <!-- x-on -->
+      <!-- It's like event. When user do something in button (in this example is click), the variable or something can be changed -->
+      <!-- x-bind -->
+      <!-- For binding, especially class. Sometime, you want to change a button color if button clicked -->
+      <button 
+      x-on:click="open = !open" 
+      x-bind:class="open ? 'bg-red-800 text-white' : 'bg-red-200 text-black' "
+      class="px-4 py-2 rounded-xl">
+        Click
+      </button>
+
+      <!-- x-show -->
+      <!-- If it true, the div will display. However, if it not true, the div will hide -->
+      <!-- x-transition -->
+      <!-- if display, it started with transition -->
+      <!-- x-cloak -->
+      <!-- To prevent buggy in x-show? -->
+      <div x-show="open" x-transition x-cloak>
+        <p class="bg-red-300 text-black p-4 my-6">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid hic est sed nostrum? Facere dolorum perferendis pariatur similique aliquid magnam ipsum totam fugit hic sunt.
+        </p>
+      </div>
+
+      <!-- x-text -->
+      <!-- Display a text using data or variable -->
+      <div class="my-4">
+        My name is <span x-text="name" class="text-blue-800 font-bold"></span>
+      </div>
+
+      <!-- x-effect -->
+      <!-- Run function in JS  -->
+      <div x-effect="console.log(open)"></div>
+
+      <!-- x-model -->
+      <!-- link input to variable or data. And if variable changed, it changed real time -->
+      <input x-model="search" type="text" class="border p-2 w-full my-2" placeholder="Search for something...">
+      <p>
+        <span class="font-bold">Searching for:</span>
+        <span x-text="search" class="x-black"></span>
+      </p>
+
+      <!-- x-if -->
+      <!-- Well, it's basic operation "IF" -->
+      <!-- The different between x-if and x-show is, x-if can using generally, 
+      but x-show specialized to display or hide. x-show + x-transtition will powerful, but not x-if + x-transition -->
+      <!-- x-if must in template -->
+      <template x-if="open">
+        <div class="bg-blue-200 p-2">Yo! You activate something when clicked the button, right?</div>
+      </template>
+
+      <!-- x-for -->
+      <!-- Normal looping  -->
+      <h2 class="text-xl font-bold">Posts List</h2>
+      <ul>
+        <template x-for="post in posts">
+          <li x-text="post.title"></li>
+        </template>
+      </ul>
+      <button 
+      x-on:click="posts.push({title: 'New Post'})"
+      class="px-4 py-2 bg-blue-200 rounded-xl">
+        Add Post
+      </button>
+
+      <!-- @click -->
+      <!-- alternative syntax for x-on:click. So 'x-on:' can be chaned with '@'  -->
+      <button 
+      @click="posts.push({title: 'New Post 2'})"
+      class="px-4 py-2 bg-blue-200 rounded-xl">
+        Add Post 2
+      </button>
+
+      <!-- x-ref -->
+      <!-- It similiar to id or class, but...  -->
+      <!-- You can control x-ref with $refs. Same as control id or class with document.querySelector()  -->
+      <div class="my-6">
+        <div x-ref="text">Yo</div>
+        <button
+        x-on:click="$refs.text.innerText = 'Yahallo'"
+        class="px-4 py-2 bg-green-200 rounded-xl"
+        >
+          Change Text to Yahallo
+        </button>
+      </div>
+
+      <!-- x-html -->
+      <!-- ERROR  -->
+      <div x-html="( await axios.get('./partial.html').data )"></div>
+
+      <!-- $el -->
+      <!-- Change component in current node/component. I think, el is abbreviation for Event Listener -->
+      <button 
+      x-on:click="$el.innerText = 'Yahallo'"
+      class="px-4 py-2 bg-violet-200 rounded-xl my-4">
+        Change to "Yahallo"
+      </button>
+
+      <!-- $watch -->
+      <!-- See something updated. For example, if I want to see posts updated in console.log, the code is in below  -->
+      <!-- x-init -->
+      <!-- Origin of Alpine.JS. So, if I want to declare something in first, using x-init.  -->
+      <div x-init="$watch('posts', value => console.log(value))"></div>
+
+      <!-- $dispatch -->
+      <!-- Shortcut do to some JS Event? -->
+      <div @notify="alert('Yahallo! You have been notified!')">
+        <button x-on:click="$dispatch('notify')" class="px-4 py-2 bg-pink-200 rounded-xl">Notify</button>
+      </div>
+
+      <!-- $data -->
+      <!-- I can passing all data with $data, but if I want to passing only some variable, using the variable is more convenient  -->
+      <!-- Anyway, I can call function from script -->
+      <button 
+      @click="getLatestPost(posts)"
+      class="bg-orange-300 px-4 py-2 rounded-xl my-4">
+        Get Latest Post
+      </button>
+
+      <footer x-data="" class="my-4">
+        <p>This Year is <span class="font-bold" x-text="new Date().getFullYear()"></span> </p>
+      </footer>
+
+      <script>
+        function getLatestPost(posts){
+          console.log(posts.slice(-1).pop())
+        }
+      </script>
+
+    </div>
+  </div>
 </body>
 </html>
