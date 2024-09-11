@@ -40,13 +40,24 @@
         Click
       </button>
 
+      <!-- @click -->
+      <!-- Alternative of x-on:click -->
+      <!-- :class -->
+      <!-- Alternatif of x-bind:class -->
+      <button 
+      @click="open = !open" 
+      :class="open ? 'bg-red-800 text-white' : 'bg-red-200 text-black' "
+      class="px-4 py-2 rounded-xl">
+        Click 2
+      </button>
+
       <!-- x-show -->
       <!-- If it true, the div will display. However, if it not true, the div will hide -->
       <!-- x-transition -->
       <!-- if display, it started with transition -->
       <!-- x-cloak -->
       <!-- To prevent buggy in x-show? -->
-      <div x-show="open" x-transition x-cloak>
+      <div x-show="open" x-transition>
         <p class="bg-red-300 text-black p-4 my-6">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid hic est sed nostrum? Facere dolorum perferendis pariatur similique aliquid magnam ipsum totam fugit hic sunt.
         </p>
